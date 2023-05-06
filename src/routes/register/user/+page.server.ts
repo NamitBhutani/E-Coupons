@@ -5,7 +5,7 @@ import bcrypt from 'bcrypt';
 
 export const load: PageServerLoad = async () => {};
 export const actions: Actions = {
-	registerVendor: async ({ request, locals }) => {
+	registerUser: async ({ request, locals }) => {
 		const body = await request.formData();
 		const username = body.get('username');
 		const email = body.get('email');
@@ -17,7 +17,7 @@ export const actions: Actions = {
 			options: {
 				data: {
 					username,
-					isVendor: true
+					isVendor: false
 				}
 			}
 		});

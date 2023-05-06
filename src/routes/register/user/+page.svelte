@@ -3,8 +3,8 @@
 	export let form: Actions;
 </script>
 
-<h1>Register as Vendor</h1>
-<form action="?/registerVendor" method="POST">
+<h1>Register as User</h1>
+<form action="?/registerUser" method="POST">
 	<div>
 		<label for="username">Username</label>
 		<input type="text" name="username" id="username" required />
@@ -17,7 +17,7 @@
 		<label for="password">Password</label>
 		<input type="password" name="password" id="password" required />
 	</div>
-	<button type="submit">Register as Vendor</button>
+	<button type="submit">Register as User</button>
 </form>
 
 {#if form?.username}

@@ -3,30 +3,36 @@ import type { Actions, PageServerLoad, RequestEvent } from './$types';
 import { supabase } from '$lib/supabaseClient';
 import bcrypt from 'bcrypt';
 
-enum AccessRoles {
-	USER = 'USER',
-	VENDOR = 'VENDOR'
-}
-
 export const load: PageServerLoad = async () => {};
 export const actions: Actions = {
-	register: async ({ request }) => {
-		const data = await request.formData();
-		const username = data.get('username');
-		const email = data.get('email');
-		const password = data.get('password');
+	register: async ({ request, locals }) => {
+		const body = await request.formData();
+		const username = body.get('username');
+		const email = body.get('email');
+		const password = body.get('password');
 
-		const { error }: any = await supabase.from('vendors').insert({
-			username,
-			email,
-			password,
-			id: crypto.randomUUID(),
-			isVendor: true
+		const { data, error: err } = await locals.supabase.auth.signUp({
+			email: email as string,
+			password: password as string,
+			options: {
+				data: {
+					username,
+					isVendor: true
+				}
+			}
 		});
-		if (error) {
-			console.log(error);
+
+		// const { error }: any = await supabase.from('vendors').insert({
+		// 	username,
+		// 	email,
+		// 	password: bcrypt.hashSync(password as string, 10),
+		// 	id: crypto.randomUUID(),
+		// 	isVendor: true
+		// });
+		if (err) {
+			console.log(err);
 		}
 
-		throw redirect(303, '/login');
+		throw redirect(303, '/');
 	}
 };

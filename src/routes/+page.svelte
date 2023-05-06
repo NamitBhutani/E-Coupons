@@ -3,9 +3,12 @@
 	export let data: PageData;
 </script>
 
-<h1>Welcome to E-Coupons</h1>
+<h1>SERVING AS HOME PAGE FOR NOW</h1>
 {#if data.session}
 	<p>Welcome, {data.session.user.email}!</p>
+	<form action="/logout">
+		<button type="submit"> Logout </button>
+	</form>
 {:else}
 	<div>
 		<a href="/login">Login</a>

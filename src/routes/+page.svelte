@@ -3,7 +3,7 @@
 	export let data: PageData;
 </script>
 
-<h1>Welcom to E-Coupons!</h1>
+<h1>Welcome to E-Coupons!</h1>
 {#if data.session}
 	<p>Welcome, {data.session.user.email}!</p>
 	<form method="POST" action="/logout">
@@ -17,11 +17,14 @@
 {/if}
 
 <style>
-	h1 {
+	h1,
+	p {
 		text-align: center;
 		padding: 1rem;
 	}
-	a {
-		margin: 1rem;
+	a,
+	button {
+		width: 95%;
+		margin: 2.5%;
 	}
 </style>

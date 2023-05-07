@@ -26,6 +26,6 @@ export const actions: Actions = {
 			console.log(err);
 		}
 
-		throw redirect(303, '/');
+		throw redirect(303, '/confirmemail');
 	}
 };

@@ -21,11 +21,10 @@ export const actions: Actions = {
 				}
 			}
 		});
-
 		if (err) {
 			console.log(err);
 		}
 
-		throw redirect(303, '/');
+		throw redirect(303, '/confirmemail');
 	}
 };

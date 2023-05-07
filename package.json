@@ -27,5 +27,9 @@
 		"vite": "^4.3.4"
 	},
 	"type": "module",
-	"dependencies": {}
+	"dependencies": {
+		"@sveltejs/adapter-vercel": "^2.4.3",
+		"@types/qrcode": "^1.5.0",
+		"qrcode": "^1.5.3"
+	}
 }

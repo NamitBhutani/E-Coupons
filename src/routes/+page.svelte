@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 	export let data: PageData;
+	$: ({ isValid } = data);
 </script>
 
 <h1>Welcome to E-Coupons!</h1>
@@ -9,6 +10,7 @@
 	<form method="POST" action="/logout">
 		<button type="submit"> Logout </button>
 	</form>
+	<p>{JSON.stringify(isValid)}</p>
 {:else}
 	<div class="grid">
 		<a href="/login" role="button">Login</a>

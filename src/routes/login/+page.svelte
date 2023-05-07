@@ -2,7 +2,9 @@
 </script>
 
 <form method="POST" action="?/login">
+	<div>Email:</div>
 	<input type="text" name="email" />
+	<div>Password:</div>
 	<input type="password" name="password" />
 	<button type="submit">Login</button>
 </form>

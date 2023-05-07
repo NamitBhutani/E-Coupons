@@ -3,7 +3,7 @@
 	export let data: PageData;
 </script>
 
-<h1>SERVING AS HOME PAGE FOR NOW</h1>
+<h1>Welcom to E-Coupons!</h1>
 {#if data.session}
 	<p>Welcome, {data.session.user.email}!</p>
 	<form method="POST" action="/logout">
@@ -11,7 +11,7 @@
 	</form>
 {:else}
 	<div>
-		<a href="/login">Login</a>
-		<a href="/register"> Register</a>
+		<a href="/login" role="button">Login</a>
+		<a href="/register" role="button"> Register</a>
 	</div>
 {/if}

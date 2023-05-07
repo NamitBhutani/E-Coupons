@@ -5,17 +5,19 @@
 
 <h1>Register as User</h1>
 <form action="?/registerUser" method="POST">
-	<div>
-		<label for="username">Username</label>
-		<input type="text" name="username" id="username" required />
-	</div>
-	<div>
-		<label for="email">Email</label>
-		<input type="email" name="email" id="email" required />
-	</div>
-	<div>
-		<label for="password">Password</label>
-		<input type="password" name="password" id="password" required />
+	<div class="grid">
+		<div>
+			<label for="username">Username</label>
+			<input type="text" name="username" id="username" required />
+		</div>
+		<div>
+			<label for="email">Email</label>
+			<input type="email" name="email" id="email" required />
+		</div>
+		<div>
+			<label for="password">Password</label>
+			<input type="password" name="password" id="password" required />
+		</div>
 	</div>
 	<button type="submit">Register as User</button>
 </form>

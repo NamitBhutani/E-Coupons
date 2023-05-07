@@ -5,19 +5,21 @@
 
 <h1>Register as Vendor</h1>
 <form action="?/registerVendor" method="POST">
-	<div>
-		<label for="username">Username</label>
-		<input type="text" name="username" id="username" required />
+	<div class="grid">
+		<div>
+			<label for="username">Username</label>
+			<input type="text" name="username" id="username" required />
+		</div>
+		<div>
+			<label for="email">Email</label>
+			<input type="email" name="email" id="email" required />
+		</div>
+		<div>
+			<label for="password">Password</label>
+			<input type="password" name="password" id="password" required />
+		</div>
+		<button type="submit">Register as Vendor</button>
 	</div>
-	<div>
-		<label for="email">Email</label>
-		<input type="email" name="email" id="email" required />
-	</div>
-	<div>
-		<label for="password">Password</label>
-		<input type="password" name="password" id="password" required />
-	</div>
-	<button type="submit">Register as Vendor</button>
 </form>
 
 {#if form?.username}

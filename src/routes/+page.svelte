@@ -6,7 +6,7 @@
 <h1>SERVING AS HOME PAGE FOR NOW</h1>
 {#if data.session}
 	<p>Welcome, {data.session.user.email}!</p>
-	<form action="/logout">
+	<form method="POST" action="/logout">
 		<button type="submit"> Logout </button>
 	</form>
 {:else}

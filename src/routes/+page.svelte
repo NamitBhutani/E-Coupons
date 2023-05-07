@@ -10,8 +10,18 @@
 		<button type="submit"> Logout </button>
 	</form>
 {:else}
-	<div>
+	<div class="grid">
 		<a href="/login" role="button">Login</a>
 		<a href="/register" role="button"> Register</a>
 	</div>
 {/if}
+
+<style>
+	h1 {
+		text-align: center;
+		padding: 1rem;
+	}
+	a {
+		margin: 1rem;
+	}
+</style>

@@ -18,10 +18,21 @@
 			<label for="password">Password</label>
 			<input type="password" name="password" id="password" required />
 		</div>
-		<button type="submit">Register as Vendor</button>
 	</div>
+	<button type="submit">Register as Vendor</button>
 </form>
 
 {#if form?.username}
 	<p class="error">username is taken</p>
 {/if}
+
+<style>
+	h1 {
+		text-align: center;
+		margin-top: 1rem;
+	}
+	form {
+		width: 95%;
+		margin-left: 2.5%;
+	}
+</style>

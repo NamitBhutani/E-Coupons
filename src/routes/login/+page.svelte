@@ -8,3 +8,10 @@
 	<input type="password" name="password" />
 	<button type="submit">Login</button>
 </form>
+
+<style>
+	form {
+		width: 95%;
+		margin: 2.5%;
+	}
+</style>

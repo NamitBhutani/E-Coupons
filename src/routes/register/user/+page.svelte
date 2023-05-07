@@ -25,3 +25,14 @@
 {#if form?.username}
 	<p class="error">username is taken</p>
 {/if}
+
+<style>
+	h1 {
+		text-align: center;
+		margin-top: 1rem;
+	}
+	form {
+		width: 95%;
+		margin-left: 2.5%;
+	}
+</style>

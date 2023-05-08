@@ -23,11 +23,11 @@ export const load: LayoutLoad = async ({ fetch, data, depends }) => {
 	} = await supabase.auth.getUser();
 	let metadata;
 
-	if (!user) {
-		throw error(401, 'No user found');
-	} else {
-		metadata = user.user_metadata;
-	}
+	// if (!user) {
+	// 	throw error(401, 'No user found');
+	// } else {
+	// 	metadata = user.user_metadata;
+	// }
 
 	return { supabase, session, user, metadata };
 };

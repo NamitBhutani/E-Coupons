@@ -1,8 +1,20 @@
-import { AuthApiError } from '@supabase/supabase-js';
+import { AuthApiError, type Provider } from '@supabase/supabase-js';
 import { fail, redirect } from '@sveltejs/kit';
 import type { Actions } from './$types';
 export const actions: Actions = {
-	login: async ({ request, locals }) => {
+	login: async ({ request, locals, url }) => {
+		const provider = url.searchParams.get('provider') as Provider;
+		if (provider) {
+			const { data, error: err } = await locals.supabase.auth.signInWithOAuth({
+				provider: provider
+			});
+
+			if (err) {
+				return fail(400, { message: 'Oops try again later!' });
+			}
+
+			throw redirect(303, `${data.url}&hd=hyderabad.bits-pilani.ac.in`);
+		}
 		const body = await request.formData();
 		const email = body.get('email');
 		const password = body.get('password');

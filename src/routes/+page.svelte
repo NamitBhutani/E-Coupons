@@ -14,7 +14,7 @@
 {:else}
 	<div class="grid">
 		<a href="/login" role="button">Login</a>
-		<a href="/register" role="button"> Register</a>
+		<a href="/register/vendor" role="button"> Register</a>
 	</div>
 {/if}
 

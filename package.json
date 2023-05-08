@@ -24,12 +24,13 @@
 		"svelte-check": "^3.0.1",
 		"tslib": "^2.4.1",
 		"typescript": "^5.0.0",
-		"vite": "^4.3.4"
-	},
-	"type": "module",
-	"dependencies": {
+		"vite": "^4.3.4",
 		"@sveltejs/adapter-vercel": "^2.4.3",
 		"@types/qrcode": "^1.5.0",
 		"qrcode": "^1.5.3"
+	},
+	"type": "module",
+	"dependencies": {
+		
 	}
 }

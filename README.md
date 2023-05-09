@@ -7,4 +7,4 @@ To do-
 1. Complete the /payto/[id] route
 2. RLS in supabase for restricting access to tables
 3. Make a separate vendorsProfiles(ones who have confirmed their mail)table and pass data from auth.Users table to it on entry
-4. Protect routes in hook.server.ts
+4. Protect vendor/user routes in hook.server.ts

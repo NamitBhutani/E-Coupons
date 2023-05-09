@@ -1,7 +1,6 @@
 import { redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad, RequestEvent } from './$types';
 import { supabase } from '$lib/supabaseClient';
-import bcrypt from 'bcrypt';
 
 export const load: PageServerLoad = async () => {};
 export const actions: Actions = {

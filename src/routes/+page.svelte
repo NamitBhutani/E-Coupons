@@ -22,7 +22,7 @@
 	<form method="POST" action="/logout">
 		<button type="submit"> Logout </button>
 	</form>
-{:else if data.session && data.session.user.user_metadata.isVendor === null}
+{:else if data.session && data.session.user.user_metadata.name != null}
 	<p>Current Balance:</p>
 	<form method="POST" action="/pay">
 		<input type="number" name="amount" placeholder="Amount" />

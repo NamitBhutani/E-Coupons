@@ -1,24 +1,27 @@
 <script lang="ts">
 	export let data: PageData;
 	import type { PageData } from './$types';
-	let testData: string;
-	testData = JSON.stringify(data.vendorData);
 </script>
 
-<p>{testData}</p>
-
-<form action="" method="POST">
-	<div class="grid">
-		<div>
-			<label class="payto" for="payto">Paying To:</label>
-			<label class="amount" for="amount">Enter the amount you want to pay-</label>
+{#if data.vendorData[0].raw_user_meta_data.isVendor === true}
+	<form action="/payto" method="POST">
+		<div class="grid">
+			<div>
+				<label class="payto" for="payto"
+					>Paying To: {data.vendorData[0].raw_user_meta_data.username}</label
+				>
+				<label class="amount" for="amount">Enter the amount you want to pay-</label>
+			</div>
+			<div class="input">
+				<input type="text" name="amount" id="amount" required />
+			</div>
 		</div>
-		<div class="input">
-			<input type="text" name="amount" id="amount" required />
-		</div>
-	</div>
-	<button type="submit">Pay</button>
-</form>
+		<button type="submit">Pay</button>
+	</form>
+{:else}
+	<h1>Invalid Vendor</h1>
+	<p>Vendor does not exist</p>
+{/if}
 
 <style>
 	.payto,

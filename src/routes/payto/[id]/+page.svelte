@@ -1,10 +1,12 @@
-<!-- <script lang="ts">
+<script lang="ts">
 	export let data: PageData;
 	import type { PageData } from './$types';
-	//let { vendorBalance } = data;
-</script> -->
+	let testData: string;
+	testData = JSON.stringify(data.vendorData);
+</script>
 
-<!-- <p>{vendorBalance}</p> -->
+<p>{testData}</p>
+
 <form action="" method="POST">
 	<div class="grid">
 		<div>

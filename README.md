@@ -9,3 +9,4 @@ To do-
 2. Make a separate vendorsProfiles(ones who have confirmed their mail and are Vendors) table and pass data from auth.Users table to it on entry(using functions and triggers)
 3. Protect vendor/user routes in hook.server.ts
 4. Redo Styles
+5. Add modal for showing successfull transaction

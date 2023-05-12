@@ -1,24 +1,32 @@
 <script lang="ts">
 	import type { PageData } from './$types';
-	//import { supabase } from '$lib/supabaseClient';
 	import QRCode from 'qrcode';
 	import { onMount } from 'svelte';
 	//import { error } from '@sveltejs/kit';
 	export let data: PageData;
 	let qrDataURL: string;
 	let uuid: string;
-	//export let username: string;
+	let showParagraph: boolean = false;
 	onMount(async () => {
 		if (data?.session?.user.user_metadata.isVendor == true) {
 			uuid = data.session.user.id;
 			qrDataURL = await QRCode.toDataURL(`ecoupons.vercel.app/payto/${uuid}`);
 		}
 	});
+	const toggleBalanceView = () => {
+		showParagraph = !showParagraph;
+	};
 </script>
 
 <h1>Welcome to E-Coupons!</h1>
 {#if data.session && data.session.user.user_metadata.isVendor === true}
 	<p>Welcome to the Vendor Screen, {data.session.user.user_metadata.username}!</p>
+	{#if showParagraph}
+		<p>Current Balance: {data.userBalance?.balance}</p>
+	{/if}
+	<button on:click={toggleBalanceView}
+		>{#if showParagraph} Hide Balance {:else} Show Balance{/if}</button
+	>
 	<div class="img">
 		<img src={qrDataURL} alt="" />
 	</div>
@@ -27,11 +35,19 @@
 	</form>
 {:else if data.session && data.session.user.user_metadata.name != null}
 	<p>Welcome to the User Screen, {data.session.user.user_metadata.name}!</p>
-	<p>Current Balance : {data.userBalance?.balance}</p>
+	{#if showParagraph}
+		<p>Current Balance: {data.userBalance?.balance}</p>
+	{/if}
+	<button on:click={toggleBalanceView}
+		>{#if showParagraph} Hide Balance {:else} Show Balance{/if}</button
+	>
 	<form method="POST" action="?/payto">
 		<input type="number" name="amount" placeholder="Amount" />
 		<input type="text" name="vendorName" placeholder="Vendor Username" />
 		<button type="submit"> Pay </button>
+	</form>
+	<form method="POST" action="/logout">
+		<button type="submit"> Logout </button>
 	</form>
 {:else}
 	<div class="grid">

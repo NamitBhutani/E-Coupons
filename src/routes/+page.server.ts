@@ -1,41 +1,46 @@
-import type { PageServerLoad, Actions, PageData } from './$types';
+import type { PageServerLoad, Actions } from './$types';
 import { supabase } from '$lib/supabaseClient';
 import { error } from '@sveltejs/kit';
-let loadeddatainFormAction: number;
+let loadeddatainFormAction: string;
+let newAmount: number;
 
 export const actions: Actions = {
 	payto: async ({ request }) => {
-		const data = await request.formData();
-		let amount: number = <number>(<unknown>data.get('amount')); // type casting the data.get('amount') to number to be able to assign to the variable
-		amount += loadeddatainFormAction;
-		const vendorName = data.get('vendorName');
-
-		const { error: err } = await supabase
-			.from('profiles')
-			.update({ balance: amount })
-			.eq('raw_user_meta_data:username', vendorName);
-		if (err) throw error(500, 'Oops! The transaction failed. Please try again later.');
+		const formdata = await request.formData();
+		const amount = <string>(<unknown>formdata.get('amount')); // type casting the data.get('amount') to number to be able to assign to the variable
+		const vendorName = formdata.get('vendorName');
 
 		const { data: loadData, error: loadErr } = await supabase
 			.from('profiles')
 			.select('balance')
-			.eq('raw_user_meta_data:username', vendorName)
+			.eq(`raw_user_meta_data->username`, JSON.stringify(vendorName))
 			.single(); // Returns the data in a single object instead of an array(really cool find from the docs :D)
 		if (loadErr) throw error(500, 'Oops! The transaction failed. Please try again later.');
-		else loadeddatainFormAction = loadData?.balance;
-	}
+		else loadeddatainFormAction = loadData.balance;
+
+		newAmount = parseFloat(amount) + parseFloat(loadeddatainFormAction);
+
+		const { error: err } = await supabase
+			.from('profiles')
+			.update({ balance: newAmount })
+			.eq('raw_user_meta_data->username', JSON.stringify(vendorName));
+		if (err) throw error(500, 'Oops! The transaction failed. Please try again later.');
+	} //updating the balance of the vendor
 };
 
 //Loading logged in User's Balance to show in the form
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const session = await locals.getSession();
+
 	const { data: loadData, error: err } = await supabase
 		.from('profiles')
 		.select('balance')
 		.eq('email', session?.user.email)
 		.single();
-	return {
-		userBalance: loadData
-	};
+	if (err) console.log(err + 'this error is from 2');
+	else
+		return {
+			userBalance: loadData
+		};
 };

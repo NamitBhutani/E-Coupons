@@ -14,7 +14,6 @@
 			qrDataURL = await QRCode.toDataURL(`ecoupons.vercel.app/payto/${uuid}`);
 		}
 	});
-	//console.log(data.userBalance);
 </script>
 
 <h1>Welcome to E-Coupons!</h1>
@@ -27,7 +26,8 @@
 		<button type="submit"> Logout </button>
 	</form>
 {:else if data.session && data.session.user.user_metadata.name != null}
-	<p>Current Balance:{data.userBalance?.balance}</p>
+	<p>Welcome to the User Screen, {data.session.user.user_metadata.name}!</p>
+	<p>Current Balance : {data.userBalance?.balance}</p>
 	<form method="POST" action="?/payto">
 		<input type="number" name="amount" placeholder="Amount" />
 		<input type="text" name="vendorName" placeholder="Vendor Username" />

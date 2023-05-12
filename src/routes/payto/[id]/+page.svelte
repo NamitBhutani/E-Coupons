@@ -4,7 +4,7 @@
 </script>
 
 {#if data.vendorData[0].raw_user_meta_data.isVendor === true}
-	<form action="/payto" method="POST">
+	<form action="?/payto" method="POST">
 		<div class="grid">
 			<div>
 				<label class="payto" for="payto"

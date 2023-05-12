@@ -1,10 +1,13 @@
 <script lang="ts">
 	import type { PageData } from './$types';
+	//import { supabase } from '$lib/supabaseClient';
 	import QRCode from 'qrcode';
 	import { onMount } from 'svelte';
+	//import { error } from '@sveltejs/kit';
 	export let data: PageData;
 	let qrDataURL: string;
 	let uuid: string;
+	//export let username: string;
 	onMount(async () => {
 		if (data?.session?.user.user_metadata.isVendor == true) {
 			uuid = data.session.user.id;
@@ -24,7 +27,7 @@
 	</form>
 {:else if data.session && data.session.user.user_metadata.name != null}
 	<p>Current Balance:</p>
-	<form method="POST" action="/pay">
+	<form method="POST" action="?/payto">
 		<input type="number" name="amount" placeholder="Amount" />
 		<input type="text" name="vendorName" placeholder="Vendor Username" />
 		<button type="submit"> Pay </button>

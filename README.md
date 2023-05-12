@@ -5,7 +5,7 @@ The task is to a create a vendor/user payment system where user scans a qr code 
 
 To do-
 
-1. setup payment functionality(add money to vendor account)
-2. RLS in supabase for restricting access to tables
-3. Make a separate vendorsProfiles(ones who have confirmed their mail)table and pass data from auth.Users table to it on entry
-4. Protect vendor/user routes in hook.server.ts
+1. RLS in supabase for restricting access to tables
+2. Make a separate vendorsProfiles(ones who have confirmed their mail) table and pass data from auth.Users table to it on entry
+3. Protect vendor/user routes in hook.server.ts
+4. Redo Styles

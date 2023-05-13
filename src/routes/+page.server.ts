@@ -28,7 +28,7 @@ export const actions: Actions = {
 	} //updating the balance of the vendor
 };
 
-//Loading logged in User's Balance to show in the form
+//Loading logged in User's or Vendor's Balance to show in the form
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const session = await locals.getSession();
@@ -38,7 +38,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 		.select('balance')
 		.eq('email', session?.user.email)
 		.single();
-	if (err) console.log(err + 'this error is from 2');
+	if (err) console.log(JSON.stringify(err) + 'this error is from 2');
 	else
 		return {
 			userBalance: loadData

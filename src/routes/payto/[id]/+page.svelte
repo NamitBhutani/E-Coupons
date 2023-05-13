@@ -3,7 +3,7 @@
 	import type { PageData } from './$types';
 </script>
 
-{#if data.vendorData[0].raw_user_meta_data.isVendor === true}
+{#if data.session && data.vendorData[0].raw_user_meta_data.isVendor === true}
 	<form action="?/payto" method="POST">
 		<div class="grid">
 			<div>
@@ -18,6 +18,9 @@
 		</div>
 		<button type="submit">Pay</button>
 	</form>
+{:else if !data.session}
+	<h1>Not Logged In</h1>
+	<a href="/login" role="button">Login</a>
 {:else}
 	<h1>Invalid Vendor</h1>
 	<p>Vendor does not exist</p>

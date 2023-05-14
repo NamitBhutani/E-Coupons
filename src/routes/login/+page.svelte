@@ -45,7 +45,12 @@
 			<button type="submit" class="btn">Login as Vendor</button>
 		</form>
 		<form class="oauth flex justify-center items-center mt-4" method="POST" use:enhance>
-			<button class="btn" type="submit" formaction="?/login&provider=google">
+			<button
+				class="btn"
+				type="submit"
+				formaction="?/login&provider=google"
+				data-sveltekit-preload-data
+			>
 				Login with Google (NOT FOR VENDORS)
 			</button>
 		</form>

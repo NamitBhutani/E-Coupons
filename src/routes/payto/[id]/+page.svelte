@@ -4,41 +4,49 @@
 </script>
 
 {#if data.session && data.vendorData[0].raw_user_meta_data.isVendor === true}
-	<form action="?/payto" method="POST">
-		<div class="grid">
+	<div class="flex justify-center items-center custom-height">
+		<form action="?/payto" method="POST" class="w-full max-w-xs">
 			<div>
-				<label class="payto" for="payto"
-					>Paying To: {data.vendorData[0].raw_user_meta_data.username}</label
-				>
-				<label class="amount" for="amount">Enter the amount you want to pay-</label>
+				<div class="text-center">
+					<label class="payto text-2xl" for="payto">
+						Paying To: <span class="font-bold"
+							>{data.vendorData[0].raw_user_meta_data.username}</span
+						>
+					</label>
+				</div>
+				<label class="input-group mt-4">
+					<span>₹</span>
+					<input
+						type="text"
+						name="amount"
+						id="amount"
+						required
+						placeholder="Amount"
+						class="input input-bordered w-full"
+					/>
+				</label>
 			</div>
-			<div class="input">
-				<input type="text" name="amount" id="amount" required />
-			</div>
-		</div>
-		<button type="submit">Pay</button>
-	</form>
+			<button type="submit" class="btn w-full mt-4 text-xl">Pay</button>
+		</form>
+	</div>
 {:else if !data.session}
-	<h1>Not Logged In</h1>
-	<a href="/login" role="button">Login</a>
+	<div class="flex justify-center items-center custom-height">
+		<div class="grid grid-rows-2 grid-cols-1 gap-4 text-center px-4">
+			<h1 class="alert alert-error font-bold text-xl">❌ Please login first to make a payment!</h1>
+			<a href="/login" role="button" class="btn text-xl">Login</a>
+		</div>
+	</div>
 {:else}
-	<h1>Invalid Vendor</h1>
-	<p>Vendor does not exist</p>
+	<div class="flex justify-center items-center custom-height">
+		<div class="grid grid-rows-2 grid-cols-1 gap-4 text-center px-4">
+			<h1 class="alert alert-error font-bold text-xl">❌ Invalid Vendor ID <br /> 😖</h1>
+			<a href="/" role="button" class="btn text-l">Pay Using Vendor Name</a>
+		</div>
+	</div>
 {/if}
 
 <style>
-	.payto,
-	.amount {
-		text-align: center;
-		margin-bottom: 0.5rem;
-	}
-	form {
-		width: 95%;
-		margin-left: 2.5%;
-		margin-top: 1rem;
-	}
-	.input {
-		margin: auto;
-		width: 100%;
+	.custom-height {
+		height: 50vh;
 	}
 </style>

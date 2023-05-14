@@ -28,57 +28,78 @@
 		.subscribe();
 </script>
 
-<h1>Welcome to E-Coupons!</h1>
-{#if data.session !== null && data.session.user.user_metadata.isVendor === true}
-	<p>Welcome to the Vendor Screen, {data.session.user.user_metadata.username}!</p>
-	{#if showParagraph}
-		<p>Current Balance: {userBalanceVar || data.userBalance?.balance}</p>
-	{/if}
-	<button on:click={toggleBalanceView}
-		>{#if showParagraph} Hide Balance {:else} Show Balance{/if}</button
-	>
-	<div class="img">
-		<img src={qrDataURL} alt="" />
+<div class="flex items-center justify-center custom-height">
+	<div class="grid grid-rows-2 gap-10">
+		<h1 class="text-5xl text-center">Welcome to E-Coupons!</h1>
+		{#if data.session !== null && data.session.user.user_metadata.isVendor === true}
+			<p class="text-2xl text-center mx-1">
+				Welcome to the Vendor Screen, {data.session.user.user_metadata.username}!
+			</p>
+			{#if showParagraph}
+				<p class="text-2xl text-center mx-1">
+					<span class="font-bold">Current Balance:</span> ₹{userBalanceVar ||
+						data.userBalance?.balance}
+				</p>
+			{/if}
+			<button class="btn mx-2" on:click={toggleBalanceView}
+				>{#if showParagraph} Hide Balance {:else} Show Balance{/if}</button
+			>
+			<div class="flex items-center justify-center max-w-lg">
+				<img src={qrDataURL} alt="qrcode" class="rounded-md" />
+			</div>
+			<form method="POST" action="/logout" class="flex items-center justify-center">
+				<button class="btn px-14" type="submit"> Logout </button>
+			</form>
+		{:else if data.session !== null && data.session.user.user_metadata.name !== null}
+			<p class="text-2xl text-center mx-1">
+				Welcome to the User Screen, {data.session.user.user_metadata.name}!
+			</p>
+			{#if showParagraph}
+				<p class="text-2xl text-center mx-1">
+					<span class="font-bold">Current Balance:</span> ₹ {userBalanceVar ||
+						data.userBalance?.balance}
+				</p>
+			{/if}
+			<button class="btn mx-2" on:click={toggleBalanceView}
+				>{#if showParagraph} Hide Balance {:else} Show Balance{/if}</button
+			>
+			<div class="flex justify-center items-center">
+				<div>
+					<form method="POST" action="?/payto" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+						<label class="input-group">
+							<span>₹</span><input
+								type="number"
+								name="amount"
+								placeholder="Amount"
+								class="input input-bordered w-full"
+							/></label
+						>
+						<input
+							type="text"
+							name="vendorName"
+							placeholder="Vendor Username"
+							class="input input-bordered w-full"
+						/>
+						<div class="sm:col-span-2">
+							<button class="btn w-full" type="submit">Pay</button>
+						</div>
+					</form>
+					<form method="POST" action="/logout" class="flex justify-center items-center mt-4">
+						<button type="submit" class="btn w-full">Logout</button>
+					</form>
+				</div>
+			</div>
+		{:else}
+			<div class="flex justify-center gap-7 mt-2">
+				<a href="/login" role="button" class="btn item text-2xl">Login</a>
+				<a href="/register/vendor" role="button" class="btn text-2xl"> Register</a>
+			</div>
+		{/if}
 	</div>
-	<form method="POST" action="/logout">
-		<button type="submit"> Logout </button>
-	</form>
-{:else if data.session !== null && data.session.user.user_metadata.name !== null}
-	<p>Welcome to the User Screen, {data.session.user.user_metadata.name}!</p>
-	{#if showParagraph}
-		<p>Current Balance: {userBalanceVar || data.userBalance?.balance}</p>
-	{/if}
-	<button on:click={toggleBalanceView}
-		>{#if showParagraph} Hide Balance {:else} Show Balance{/if}</button
-	>
-	<form method="POST" action="?/payto">
-		<input type="number" name="amount" placeholder="Amount" />
-		<input type="text" name="vendorName" placeholder="Vendor Username" />
-		<button type="submit"> Pay </button>
-	</form>
-	<form method="POST" action="/logout">
-		<button type="submit"> Logout </button>
-	</form>
-{:else}
-	<div class="grid">
-		<a href="/login" role="button">Login</a>
-		<a href="/register/vendor" role="button"> Register</a>
-	</div>
-{/if}
+</div>
 
 <style>
-	h1,
-	p {
-		text-align: center;
-		padding: 1rem;
-	}
-	a,
-	button {
-		width: 95%;
-		margin: 2.5%;
-	}
-
-	.img {
-		text-align: center;
+	.custom-height {
+		height: 70vh;
 	}
 </style>

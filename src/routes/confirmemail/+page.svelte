@@ -4,9 +4,13 @@
 </script>
 
 {#if data.session === null}
-	<h1>Please Confirm your email address to proceed!</h1>
+	<div class="mx-4 mt-40">
+		<h1 class=" alert alert-info text-xl text-center font-bold">
+			ℹ️ Please Confirm your email address to proceed!
+		</h1>
+	</div>
 {:else}
-	<a href="/" role="button"
+	<a href="/" role="button" class="btn text-l text-center font-bold"
 		>Your email is already confirmed! Click here to redirect to login page!</a
 	>
 {/if}

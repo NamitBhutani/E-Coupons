@@ -118,6 +118,6 @@
 
 <style>
 	.custom-height {
-		height: 70vh;
+		height: 100vh;
 	}
 </style>

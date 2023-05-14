@@ -4,6 +4,9 @@ dependencies:
   daisyui:
     specifier: ^2.51.6
     version: 2.51.6(autoprefixer@10.4.14)(postcss@8.4.23)
+  svelte-french-toast:
+    specifier: 1.0.4-beta.0
+    version: 1.0.4-beta.0(svelte@3.58.0)
 
 devDependencies:
   '@supabase/auth-helpers-sveltekit':
@@ -1747,6 +1750,15 @@ packages:
       - sugarss
     dev: true
 
+  /svelte-french-toast@1.0.4-beta.0(svelte@3.58.0):
+    resolution: {integrity: sha512-PkYNukEQAPZyV5ei+JzeYEsbaXFSbJS8/SDTdC8giYa5Atxp2SRepFnPDWx6mu7rV53g886FNLktPMLwRljkpw==}
+    peerDependencies:
+      svelte: ^3.57.0
+    dependencies:
+      svelte: 3.58.0
+      svelte-writable-derived: 3.0.1(svelte@3.58.0)
+    dev: false
+
   /svelte-hmr@0.15.1(svelte@3.58.0):
     resolution: {integrity: sha512-BiKB4RZ8YSwRKCNVdNxK/GfY+r4Kjgp9jCLEy0DuqAKfmQtpL38cQK3afdpjw4sqSs4PLi3jIPJIFp259NkZtA==}
     engines: {node: ^12.20 || ^14.13.1 || >= 16}
@@ -1804,10 +1816,17 @@ packages:
       typescript: 5.0.4
     dev: true
 
+  /svelte-writable-derived@3.0.1(svelte@3.58.0):
+    resolution: {integrity: sha512-zBWCS5c3MA9o4NT/UJHP3KoPOhtmH2ZQ/QRK31w9LzLdPP7MNncUcBGIu4iH2RVt17iRfR6agm7nEqwNvsYuMw==}
+    peerDependencies:
+      svelte: ^3.2.1
+    dependencies:
+      svelte: 3.58.0
+    dev: false
+
   /svelte@3.58.0:
     resolution: {integrity: sha512-brIBNNB76mXFmU/Kerm4wFnkskBbluBDCjx/8TcpYRb298Yh2dztS2kQ6bhtjMcvUhd5ynClfwpz5h2gnzdQ1A==}
     engines: {node: '>= 8'}
-    dev: true
 
   /tailwindcss@3.3.2:
     resolution: {integrity: sha512-9jPkMiIBXvPc2KywkraqsUfbfj+dHDb+JPWtSJa9MLFdrPyazI7q6WX2sUrm7R9eVR7qqv3Pas7EvQFzxKnI6w==}

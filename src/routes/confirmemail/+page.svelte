@@ -5,7 +5,7 @@
 
 {#if data.session === null}
 	<div class="mx-4 mt-40">
-		<h1 class=" alert alert-info text-xl text-center font-bold">
+		<h1 class=" alert alert-info text-xl font-bold flex justify-center">
 			ℹ️ Please Confirm your email address to proceed!
 		</h1>
 	</div>

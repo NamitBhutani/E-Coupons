@@ -33,6 +33,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"daisyui": "^2.51.6"
+		"daisyui": "^2.51.6",
+		"svelte-french-toast": "1.0.4-beta.0"
 	}
 }

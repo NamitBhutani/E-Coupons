@@ -1,11 +1,29 @@
 <script lang="ts">
+	import { enhance } from '$app/forms';
+	import toast from 'svelte-french-toast';
 	export let data: PageData;
-	import type { PageData } from './$types';
+	export let form: ActionData;
+	import type { PageData, ActionData, SubmitFunction } from './$types';
+
+	if (form?.err) {
+		toast.error(form.err.message);
+	}
+	const formValidation: SubmitFunction = ({ data, cancel }) => {
+		const { amount } = Object.fromEntries(data);
+		if (amount.length < 1) {
+			toast.error('Amount cannot be empty!');
+		}
+		return async ({ result, update }) => {
+			if (result.type === 'success') {
+				toast.success('Successfully Transferred 🤑!');
+			} else await update();
+		};
+	};
 </script>
 
 {#if data.session && data.vendorData[0].raw_user_meta_data.isVendor === true}
 	<div class="flex justify-center items-center custom-height">
-		<form action="?/payto" method="POST" class="w-full max-w-xs">
+		<form action="?/payto" method="POST" class="w-full max-w-xs" use:enhance={formValidation}>
 			<div>
 				<div class="text-center">
 					<label class="payto text-2xl" for="payto">

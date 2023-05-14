@@ -1,10 +1,23 @@
 <script lang="ts">
+	import { enhance } from '$app/forms';
 	import { supabase } from '$lib/supabaseClient';
-	import type { PageData } from './$types';
+	import toast from 'svelte-french-toast';
+	import type { ActionData, PageData, SubmitFunction } from './$types';
 	import QRCode from 'qrcode';
 	import { onMount } from 'svelte';
-	//import { error } from '@sveltejs/kit';
 	export let data: PageData;
+	export let form: ActionData;
+
+	if (form?.err) {
+		toast.error(form.err.message);
+	}
+	const formValidation: SubmitFunction = ({ data, cancel }) => {
+		const { amount, vendorName } = Object.fromEntries(data);
+		if (amount.length < 1 || vendorName.length < 1) {
+			toast.error(' Amount or Vendor Username cannot be empty!');
+			cancel();
+		}
+	};
 	let qrDataURL: string;
 	let uuid: string;
 	let showParagraph: boolean = false;
@@ -65,7 +78,12 @@
 			>
 			<div class="flex justify-center items-center">
 				<div>
-					<form method="POST" action="?/payto" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+					<form
+						method="POST"
+						action="?/payto"
+						class="grid grid-cols-1 sm:grid-cols-2 gap-4"
+						use:enhance
+					>
 						<label class="input-group">
 							<span>₹</span><input
 								type="number"

@@ -4,6 +4,7 @@
 	import type { LayoutData } from './$types';
 	import '../app.css';
 	export let data: LayoutData;
+	import { Toaster } from 'svelte-french-toast';
 
 	$: ({ supabase, session } = data);
 
@@ -21,8 +22,10 @@
 <div class="flex justify-center mt-24 items-center">
 	<img src="/favicon.svg" alt="logo" class="img" />
 </div>
-
-<slot />
+<Toaster />
+<main>
+	<slot />
+</main>
 
 <style>
 	.img {

@@ -11,10 +11,8 @@ export const actions: Actions = {
 			});
 
 			if (err) {
-				return fail(400, { message: 'Oops try again later!' });
-			}
-
-			throw redirect(303, `${data.url}&hd=hyderabad.bits-pilani.ac.in`);
+				return fail(400, { err: err, message: 'Oops try again later!' });
+			} else throw redirect(303, `${data.url}&hd=hyderabad.bits-pilani.ac.in`);
 		}
 		const body = await request.formData();
 		const email = body.get('email');
@@ -27,8 +25,8 @@ export const actions: Actions = {
 
 		if (err) {
 			if (err instanceof AuthApiError && err.status === 400) {
-				return fail(400, { error: 'Invalid email or password' });
-			} else return fail(500, { error: 'Oops, something went wrong!' });
+				return fail(400, { err: err, message: 'Invalid email or password' });
+			} else return fail(500, { err: err, message: 'Oops, something went wrong!' });
 		}
 		throw redirect(303, '/');
 	}

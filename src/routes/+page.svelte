@@ -14,7 +14,9 @@
 	const formValidation: SubmitFunction = ({ data, cancel }) => {
 		const { amount, vendorName } = Object.fromEntries(data);
 		if (amount.length < 1 || vendorName.length < 1) {
-			toast.error(' Amount or Vendor Username cannot be empty!');
+			toast.error(' Amount or Vendor Username cannot be empty!', {
+				style: 'border-radius: 200px; background: #333; color: #fff;'
+			});
 			cancel();
 		}
 	};
@@ -41,7 +43,7 @@
 		.subscribe();
 </script>
 
-<div class="flex items-center justify-center custom-height">
+<div class="flex items-center justify-center">
 	<div class="grid grid-rows-2 gap-10">
 		<h1 class="text-5xl text-center">Welcome to E-Coupons!</h1>
 		{#if data.session !== null && data.session.user.user_metadata.isVendor === true}
@@ -82,7 +84,7 @@
 						method="POST"
 						action="?/payto"
 						class="grid grid-cols-1 sm:grid-cols-2 gap-4"
-						use:enhance
+						use:enhance={formValidation}
 					>
 						<label class="input-group">
 							<span>₹</span><input
@@ -115,9 +117,3 @@
 		{/if}
 	</div>
 </div>
-
-<style>
-	.custom-height {
-		height: 100vh;
-	}
-</style>

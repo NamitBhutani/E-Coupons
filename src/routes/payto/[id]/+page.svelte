@@ -11,18 +11,24 @@
 	const formValidation: SubmitFunction = ({ data, cancel }) => {
 		const { amount } = Object.fromEntries(data);
 		if (amount.length < 1) {
-			toast.error('Amount cannot be empty!');
+			toast.error('Amount cannot be empty!', {
+				style: 'border-radius: 200px; background: #333; color: #fff;'
+			});
+			cancel();
 		}
+
 		return async ({ result, update }) => {
 			if (result.type === 'success') {
-				toast.success('Successfully Transferred 🤑!');
+				toast.success('Successfully Transferred 🤑!', {
+					style: 'border-radius: 200px; background: #333; color: #fff;'
+				});
 			} else await update();
 		};
 	};
 </script>
 
 {#if data.session && data.vendorData[0].raw_user_meta_data.isVendor === true}
-	<div class="flex justify-center items-center custom-height">
+	<div class="flex justify-center items-center">
 		<form action="?/payto" method="POST" class="w-full max-w-xs" use:enhance={formValidation}>
 			<div>
 				<div class="text-center">
@@ -61,9 +67,3 @@
 		</div>
 	</div>
 {/if}
-
-<style>
-	.custom-height {
-		height: 50vh;
-	}
-</style>

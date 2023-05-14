@@ -16,21 +16,28 @@
 	const formValidation: SubmitFunction = ({ data, cancel }) => {
 		const { email, password } = Object.fromEntries(data);
 		if (email.length < 1 || password.length < 1) {
-			toast.error('Email and Password cannot be empty!');
+			toast.error('Email and Password cannot be empty!', {
+				style: 'border-radius: 200px; background: #333; color: #fff;'
+			});
 			cancel();
 		} else if (password.length < 8) {
-			toast.error('Password must be at least 8 characters long!');
+			toast.error('Password must be at least 8 characters long!', {
+				style: 'border-radius: 200px; background: #333; color: #fff;'
+			});
 			cancel();
 		} else if (formVal?.error) {
 			toast.error(formVal.error);
 			cancel();
-		} else toast.error('Email already exists!');
+		} else
+			toast.error('Email already exists!', {
+				style: 'border-radius: 200px; background: #333; color: #fff;'
+			});
 	};
 </script>
 
 <h1 class="text-4xl text-center mt-12 font-bold">Register as Vendor</h1>
 
-<div class="flex justify-center items-center custom-height">
+<div class="flex justify-center items-center mt-20">
 	<div>
 		<form
 			action="?/registerVendor"
@@ -70,9 +77,3 @@
 {#if form?.username}
 	<p class="error">username is taken</p>
 {/if}
-
-<style>
-	.custom-height {
-		height: 35vh;
-	}
-</style>

@@ -10,18 +10,22 @@
 	const formValidation: SubmitFunction = ({ data, cancel }) => {
 		const { email, password } = Object.fromEntries(data);
 		if (email.length < 1 || password.length < 1) {
-			toast.error('Email and Password cannot be empty!');
+			toast.error('Email and Password cannot be empty!', {
+				style: 'border-radius: 200px; background: #333; color: #fff;'
+			});
 			cancel();
 		}
 		return async ({ result, update }) => {
 			if (result.type === 'failure') {
-				toast.error('Please check your email or password!');
+				toast.error('Please check your email or password!', {
+					style: 'border-radius: 200px; background: #333; color: #fff;'
+				});
 			} else await update();
 		};
 	};
 </script>
 
-<div class="flex justify-center items-center custom-height">
+<div class="flex justify-center items-center">
 	<div>
 		<form
 			method="POST"
@@ -56,9 +60,3 @@
 		</form>
 	</div>
 </div>
-
-<style>
-	.custom-height {
-		height: 60vh;
-	}
-</style>

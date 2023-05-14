@@ -19,15 +19,20 @@
 	});
 </script>
 
-<div class="flex justify-center mt-24 items-center">
-	<img src="/favicon.svg" alt="logo" class="img" />
-</div>
-<Toaster />
 <main>
+	<Toaster />
+	<div class="flex justify-center items-center mb-20">
+		<img src="/favicon.svg" alt="logo" class="img" />
+	</div>
 	<slot />
 </main>
 
 <style>
+	main {
+		height: 100vh;
+		display: grid;
+		place-content: center;
+	}
 	.img {
 		max-width: 14rem;
 		min-width: 1rem;

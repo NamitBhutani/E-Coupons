@@ -43,7 +43,6 @@
 				name="username"
 				id="username"
 				placeholder="Username"
-				required
 				class="input input-bordered w-full"
 			/>
 
@@ -52,7 +51,6 @@
 				name="email"
 				id="email"
 				placeholder="Email"
-				required
 				class="input input-bordered w-full"
 			/>
 
@@ -61,7 +59,6 @@
 				name="password"
 				id="password"
 				placeholder="Password"
-				required
 				class="input input-bordered w-full max-w-xs"
 			/>
 

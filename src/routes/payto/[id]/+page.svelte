@@ -38,7 +38,6 @@
 						type="text"
 						name="amount"
 						id="amount"
-						required
 						placeholder="Amount"
 						class="input input-bordered w-full"
 					/>

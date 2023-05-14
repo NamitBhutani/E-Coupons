@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@layer base {
+	body {
+		font-family: 'Source Code Pro', monospace;
+	}
+}
+@font-face {
+	font-family: 'Source Code Pro', monospace;
+	src: url(/static/sourcecodepro-semibold-webfont.woff) format('woff'),
+		url(/static/sourcecodepro-semibold-webfont.woff2) format('woff2');
+}

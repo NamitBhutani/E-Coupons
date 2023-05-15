@@ -1,6 +1,11 @@
 import { error, redirect } from '@sveltejs/kit';
-import type { Actions, RequestEvent } from './$types';
-//import type {Actions} from 'module';
+import type { Actions } from './$types';
+import type { Config } from '@sveltejs/adapter-vercel';
+
+export const config: Config = {
+	runtime: 'edge'
+};
+
 export const actions: Actions = {
 	default: async ({ locals }) => {
 		const { error: err } = await locals.supabase.auth.signOut();

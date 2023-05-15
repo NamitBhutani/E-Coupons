@@ -5,34 +5,37 @@ let loadeddatainFormAction: string;
 let newAmount: number;
 
 export const actions: Actions = {
-	payto: async ({ request }) => {
+	add: async ({ request, locals }) => {
 		const formdata = await request.formData();
 		const amount = <string>(<unknown>formdata.get('amount')); // type casting the data.get('amount') to number to be able to assign to the variable
-		const vendorName = formdata.get('vendorName');
+		const session = await locals.getSession();
 
 		const { data: loadData, error: loadErr } = await supabase
 			.from('profiles')
 			.select('balance')
-			.eq(`raw_user_meta_data->username`, JSON.stringify(vendorName))
+			.eq('id', session?.user.id)
 			.single(); // Returns the data in a single object instead of an array(really cool find from the docs :D)
-		if (loadErr)
+		if (loadErr) {
 			return fail(500, {
 				err: loadErr,
 				message: 'Vendor not found. Please try again later.'
 			});
-		else loadeddatainFormAction = loadData.balance;
+		} else {
+			loadeddatainFormAction = loadData.balance;
+		}
 
 		newAmount = parseFloat(amount) + parseFloat(loadeddatainFormAction);
 
 		const { error: err } = await supabase
 			.from('profiles')
 			.update({ balance: newAmount })
-			.eq('raw_user_meta_data->username', JSON.stringify(vendorName));
-		if (err)
+			.eq('id', session?.user.id);
+		if (err) {
 			return fail(500, {
 				err: loadErr,
 				message: 'Oops! The transaction failed. Please try again later.'
 			});
+		}
 	} //updating the balance of the vendor
 };
 

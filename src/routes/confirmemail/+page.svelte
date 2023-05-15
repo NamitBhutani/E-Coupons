@@ -10,7 +10,7 @@
 		</h1>
 	</div>
 {:else}
-	<a href="/" role="button" class="btn text-l text-center font-bold"
+	<a href="/" role="button" class="btn btn-md text-l text-center font-bold"
 		>Your email is already confirmed! Click here to redirect to login page!</a
 	>
 {/if}

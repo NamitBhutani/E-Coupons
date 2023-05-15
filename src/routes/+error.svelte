@@ -4,5 +4,7 @@
 
 {#if $page.error}
 	<h1 class="text-5xl text-center text-red-500">{$page.error.message}</h1>
-	<a href="/" role="button" class="btn">Back to Home 🚀!</a>
+	<div class="flex items-center justify-center">
+		<a href="/" role="button" class="btn btn-md">Back to Home 🚀!</a>
+	</div>
 {/if}

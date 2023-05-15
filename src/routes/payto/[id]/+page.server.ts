@@ -1,6 +1,11 @@
 import type { PageServerLoad, Actions } from './$types';
 import { supabase } from '$lib/supabaseClient';
 import { fail } from '@sveltejs/kit';
+import type { Config } from '@sveltejs/adapter-vercel';
+
+export const config: Config = {
+	runtime: 'edge'
+};
 let loadeddatainFormAction: string; // defined a variable so that I can load the vendorBalance only when action is triggered and not on page load
 let newAmount: number;
 export const actions: Actions = {

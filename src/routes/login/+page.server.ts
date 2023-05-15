@@ -1,6 +1,11 @@
 import { AuthApiError, type Provider } from '@supabase/supabase-js';
 import { fail, redirect } from '@sveltejs/kit';
 import type { Actions } from './$types';
+import type { Config } from '@sveltejs/adapter-vercel';
+
+export const config: Config = {
+	runtime: 'edge'
+};
 
 export const actions: Actions = {
 	login: async ({ request, locals, url }) => {
@@ -25,9 +30,8 @@ export const actions: Actions = {
 
 		if (err) {
 			if (err instanceof AuthApiError && err.status === 400) {
-				return fail(400, { err: err, message: 'Invalid email or password' });
-			} else return fail(500, { err: err, message: 'Oops, something went wrong!' });
-		}
-		throw redirect(303, '/');
+				return fail(400, { message: 'Invalid email or password' });
+			} else return fail(500, { message: 'Oops, something went wrong!' });
+		} else throw redirect(303, '/');
 	}
 };

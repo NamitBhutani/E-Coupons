@@ -11,7 +11,7 @@ export const actions: Actions = {
 		const email = body.get('email');
 		const password = body.get('password');
 
-		const { data, error: err } = await locals.supabase.auth.signUp({
+		const { error: err } = await locals.supabase.auth.signUp({
 			email: email as string,
 			password: password as string,
 			options: {
@@ -21,11 +21,14 @@ export const actions: Actions = {
 				}
 			}
 		});
-		if (err) {
-			if (err instanceof AuthApiError && err.status === 400) {
-				return fail(400, { error: 'Invalid email or password!' });
-			}
-			return fail(500, { error: 'Oops something went wrong , Please try again later!' });
+		if (err instanceof AuthApiError && err.status === 400) {
+			console.log(err);
+			return fail(400, { data: email, error: JSON.stringify(err) });
+		} else if (err?.status === 500) {
+			return fail(500, {
+				data: err,
+				error: 'Oops something went wrong , Please try again later!'
+			});
 		}
 
 		throw redirect(303, '/confirmemail');

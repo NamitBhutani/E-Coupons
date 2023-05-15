@@ -4,8 +4,10 @@
 	import type { ActionData, SubmitFunction } from './$types';
 	import toast from 'svelte-french-toast';
 
-	if (form?.err) {
-		toast.error(form.err.message);
+	if (form?.message) {
+		toast.error(form.message, {
+			style: 'border-radius: 200px; background: #333; color: #fff;'
+		});
 	}
 	const formValidation: SubmitFunction = ({ data, cancel }) => {
 		const { email, password } = Object.fromEntries(data);
@@ -36,21 +38,21 @@
 			<input
 				type="text"
 				name="email"
-				class="input input-bordered w-full max-w-xs"
+				class="input input-bordered input-lg w-full max-w-xs"
 				placeholder="Email"
 			/>
 
 			<input
 				type="password"
 				name="password"
-				class="input input-bordered w-full max-w-xs"
+				class="input input-bordered input-lg w-full max-w-xs"
 				placeholder="Password"
 			/>
-			<button type="submit" class="btn">Login as Vendor</button>
+			<button type="submit" class="btn btn-md">Login as Vendor</button>
 		</form>
 		<form class="oauth flex justify-center items-center mt-4" method="POST" use:enhance>
 			<button
-				class="btn"
+				class=" btn btn-md"
 				type="submit"
 				formaction="?/login&provider=google"
 				data-sveltekit-preload-data

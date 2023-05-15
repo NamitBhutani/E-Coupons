@@ -1,17 +1,8 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	//export let form: ActionData || Actions
-	export let formVal: ActionData;
-	export let form: Actions;
-	import type { ActionData, Actions, SubmitFunction } from './$types';
+	//export let form: ActionData;
+	import type { ActionData, SubmitFunction } from './$types';
 	import toast from 'svelte-french-toast';
-
-	//let isValid: boolean;
-	//const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-
-	//const emailValidate = () => {
-	//isValid = regex.test(email);
-	//};
 
 	const formValidation: SubmitFunction = ({ data, cancel }) => {
 		const { email, password } = Object.fromEntries(data);
@@ -25,13 +16,18 @@
 				style: 'border-radius: 200px; background: #333; color: #fff;'
 			});
 			cancel();
-		} else if (formVal?.error) {
-			toast.error(formVal.error);
-			cancel();
-		} else
-			toast.error('Email already exists!', {
-				style: 'border-radius: 200px; background: #333; color: #fff;'
-			});
+		}
+		return async ({ result, update }) => {
+			if (result.type === 'failure' && result.status === 400) {
+				toast.error('User Already exists!', {
+					style: 'border-radius: 200px; background: #333; color: #fff;'
+				});
+			} else if (result.type === 'success') {
+				toast.error('Successfully registered!', {
+					style: 'border-radius: 200px; background: #333; color: #fff;'
+				});
+			} else await update();
+		};
 	};
 </script>
 
@@ -50,7 +46,7 @@
 				name="username"
 				id="username"
 				placeholder="Username"
-				class="input input-bordered w-full"
+				class="input input-bordered input-lg w-full max-w-xs"
 			/>
 
 			<input
@@ -58,7 +54,7 @@
 				name="email"
 				id="email"
 				placeholder="Email"
-				class="input input-bordered w-full"
+				class="input input-bordered input-lg w-full max-w-xs"
 			/>
 
 			<input
@@ -66,14 +62,10 @@
 				name="password"
 				id="password"
 				placeholder="Password"
-				class="input input-bordered w-full max-w-xs"
+				class="input input-bordered input-lg w-full max-w-xs"
 			/>
-
-			<button class="btn" type="submit">Register as Vendor</button>
+			<!-- <p>{form?.error}</p> -->
+			<button class="btn btn-md" type="submit">Register as Vendor</button>
 		</form>
 	</div>
 </div>
-
-{#if form?.username}
-	<p class="error">username is taken</p>
-{/if}

@@ -6,19 +6,28 @@
 	import QRCode from 'qrcode';
 	import { onMount } from 'svelte';
 	export let data: PageData;
-	export let form: ActionData;
+	//export let form: ActionData;
 
-	if (form?.err) {
-		toast.error(form.err.message);
-	}
 	const formValidation: SubmitFunction = ({ data, cancel }) => {
-		const { amount, vendorName } = Object.fromEntries(data);
-		if (amount.length < 1 || vendorName.length < 1) {
+		const { amount } = Object.fromEntries(data);
+		if (amount.length < 1) {
 			toast.error(' Amount or Vendor Username cannot be empty!', {
 				style: 'border-radius: 200px; background: #333; color: #fff;'
 			});
 			cancel();
 		}
+
+		return async ({ result, update }) => {
+			if (result.type === 'success') {
+				toast.success('Successfully Transferred 🤑!', {
+					style: 'border-radius: 200px; background: #333; color: #fff;'
+				});
+				await update();
+			} else
+				toast.error('Something went wrong try again later', {
+					style: 'border-radius: 200px; background: #333; color: #fff;'
+				});
+		};
 	};
 	let qrDataURL: string;
 	let uuid: string;
@@ -56,14 +65,14 @@
 						data.userBalance?.balance}
 				</p>
 			{/if}
-			<button class="btn mx-2" on:click={toggleBalanceView}
+			<button class="btn btn-md mx-2" on:click={toggleBalanceView}
 				>{#if showParagraph} Hide Balance {:else} Show Balance{/if}</button
 			>
 			<div class="flex items-center justify-center max-w-lg">
 				<img src={qrDataURL} alt="qrcode" class="rounded-md" />
 			</div>
 			<form method="POST" action="/logout" class="flex items-center justify-center">
-				<button class="btn px-14" type="submit"> Logout </button>
+				<button class="btn btn-md px-14" type="submit"> Logout </button>
 			</form>
 		{:else if data.session !== null && data.session.user.user_metadata.name !== null}
 			<p class="text-2xl text-center mx-1">
@@ -75,44 +84,40 @@
 						data.userBalance?.balance}
 				</p>
 			{/if}
-			<button class="btn mx-2" on:click={toggleBalanceView}
+			<button class="btn btn-md mx-2" on:click={toggleBalanceView}
 				>{#if showParagraph} Hide Balance {:else} Show Balance{/if}</button
 			>
 			<div class="flex justify-center items-center">
 				<div>
 					<form
 						method="POST"
-						action="?/payto"
-						class="grid grid-cols-1 sm:grid-cols-2 gap-4"
+						action="?/add"
+						class="flex justify-center items-center gap-4"
 						use:enhance={formValidation}
 					>
 						<label class="input-group">
-							<span>₹</span><input
+							<span>₹</span>
+							<input
 								type="number"
 								name="amount"
 								placeholder="Amount"
-								class="input input-bordered w-full"
-							/></label
-						>
-						<input
-							type="text"
-							name="vendorName"
-							placeholder="Vendor Username"
-							class="input input-bordered w-full"
-						/>
-						<div class="sm:col-span-2">
-							<button class="btn w-full" type="submit">Pay</button>
+								class="input input-bordered input-lg w-full max-w-xs col-span-1"
+							/>
+						</label>
+
+						<div>
+							<button class="btn btn-md w-full" type="submit">Add Money to your account</button>
 						</div>
 					</form>
 					<form method="POST" action="/logout" class="flex justify-center items-center mt-4">
-						<button type="submit" class="btn w-full">Logout</button>
+						<button type="submit" class="btn btn-md w-full">Logout</button>
 					</form>
 				</div>
 			</div>
 		{:else}
 			<div class="flex justify-center gap-7 mt-2">
-				<a href="/login" role="button" class="btn item text-2xl">Login</a>
-				<a href="/register/vendor" role="button" class="btn text-2xl"> Register</a>
+				<a href="/login" role="button" class="btn btn-md item text-2xl">Login</a>
+				<a href="/register/vendor" role="button" class="btn btn-md text-2xl"> Register</a>
 			</div>
 		{/if}
 	</div>

@@ -2,12 +2,8 @@
 	import { enhance } from '$app/forms';
 	import toast from 'svelte-french-toast';
 	export let data: PageData;
-	export let form: ActionData;
-	import type { PageData, ActionData, SubmitFunction } from './$types';
+	import type { PageData, SubmitFunction } from './$types';
 
-	if (form?.err) {
-		toast.error(form.err.message);
-	}
 	const formValidation: SubmitFunction = ({ data, cancel }) => {
 		const { amount } = Object.fromEntries(data);
 		if (amount.length < 1) {
@@ -23,6 +19,10 @@
 					style: 'border-radius: 200px; background: #333; color: #fff;'
 				});
 				await update();
+			} else if (result.type === 'error') {
+				toast.error('Not enough money BROKE BOI 😖!', {
+					style: 'border-radius: 200px; background: #333; color: #fff;'
+				});
 			}
 		};
 	};

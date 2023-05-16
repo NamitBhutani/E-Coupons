@@ -38,20 +38,3 @@ export const actions: Actions = {
 		}
 	} //updating the balance of the vendor
 };
-
-//Loading logged in User's or Vendor's Balance to show in the form
-
-export const load: PageServerLoad = async ({ locals }) => {
-	const session = await locals.getSession();
-
-	const { data: loadData, error: err } = await supabase
-		.from('profiles')
-		.select('balance')
-		.eq('email', session?.user.email)
-		.single();
-	//if (err) console.log(JSON.stringify(err) + 'this error is from 2');
-	//else
-	return {
-		userBalance: loadData
-	};
-};

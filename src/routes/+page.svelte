@@ -6,6 +6,21 @@
 	import QRCode from 'qrcode';
 	import { onMount } from 'svelte';
 	export let data: PageData;
+	let balance: any;
+
+	onMount(async () => {
+		const {
+			data: { user }
+		} = await supabase.auth.getUser();
+
+		const { data: loadData, error: err } = await supabase
+			.from('profiles')
+			.select('balance')
+			.eq('email', user?.email)
+			.single();
+		if (err) console.log(JSON.stringify(err) + 'this error is from 2');
+		else balance = loadData.balance;
+	});
 	//export let form: ActionData;
 
 	const formValidation: SubmitFunction = ({ data, cancel }) => {
@@ -61,8 +76,7 @@
 			</p>
 			{#if showParagraph}
 				<p class="text-2xl text-center mx-1">
-					<span class="font-bold">Current Balance:</span> ₹{userBalanceVar ||
-						data.userBalance?.balance}
+					<span class="font-bold">Current Balance:</span> ₹{userBalanceVar || balance}
 				</p>
 			{/if}
 			<button class="btn btn-md mx-2" on:click={toggleBalanceView}
@@ -80,8 +94,7 @@
 			</p>
 			{#if showParagraph}
 				<p class="text-2xl text-center mx-1">
-					<span class="font-bold">Current Balance:</span> ₹ {userBalanceVar ||
-						data.userBalance?.balance}
+					<span class="font-bold">Current Balance:</span> ₹ {userBalanceVar || balance}
 				</p>
 			{/if}
 			<button class="btn btn-md mx-2" on:click={toggleBalanceView}

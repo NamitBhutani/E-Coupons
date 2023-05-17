@@ -19,9 +19,9 @@
 	});
 </script>
 
-<main>
+<main class="mx-5 my-20">
 	<Toaster />
-	<div class="flex justify-center items-center mb-20 mt-40">
+	<div class="flex justify-center items-center mb-20">
 		<img src="/favicon.svg" alt="logo" class="img" />
 	</div>
 	<slot />

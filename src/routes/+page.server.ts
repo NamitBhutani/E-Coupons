@@ -1,6 +1,6 @@
 import type { PageServerLoad, Actions } from './$types';
 import { supabase } from '$lib/supabaseClient';
-import { fail } from '@sveltejs/kit';
+import { error, fail } from '@sveltejs/kit';
 let loadeddatainFormAction: string;
 let newAmount: number;
 
@@ -38,4 +38,16 @@ export const actions: Actions = {
 			});
 		}
 	} //updating the balance of the vendor
+};
+export const load: PageServerLoad = async ({ locals }) => {
+	const session = await locals.getSession();
+
+	const { data: loadData, error: err } = await supabase
+		.from('profiles')
+		.select('balance')
+		.eq('email', session?.user.email)
+		.single(); // Returns the data in a single object instead of an array(really cool find from the docs :D)
+	return {
+		userBalance: loadData
+	};
 };

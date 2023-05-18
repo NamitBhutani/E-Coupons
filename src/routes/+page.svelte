@@ -5,6 +5,7 @@
 	import type { ActionData, PageData, SubmitFunction } from './$types';
 	import QRCode from 'qrcode';
 	import { onMount } from 'svelte';
+	import { fail } from '@sveltejs/kit';
 	export let data: PageData;
 	let balance: any;
 
@@ -19,7 +20,7 @@
 			.eq('email', user?.email)
 			.single();
 		if (err) {
-			console.log(user?.email);
+			return fail(500, { message: 'Something went wrong on our side 😓' });
 		} else balance = loadData.balance;
 	});
 	//export let form: ActionData;
@@ -77,7 +78,9 @@
 			</p>
 			{#if showParagraph}
 				<p class="text-2xl text-center mx-1">
-					<span class="font-bold">Current Balance:</span> ₹{userBalanceVar || balance}
+					<span class="font-bold">Current Balance:</span> ₹{userBalanceVar ||
+						balance ||
+						data.userBalance?.balance}
 				</p>
 			{/if}
 			<button class="btn btn-md mx-2" on:click={toggleBalanceView}

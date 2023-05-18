@@ -22,6 +22,7 @@ export const actions: Actions = {
 			});
 		} else {
 			loadeddatainFormAction = loadData.balance;
+			console.log(loadData.balance);
 		}
 
 		newAmount = parseFloat(amount) + parseFloat(loadeddatainFormAction);

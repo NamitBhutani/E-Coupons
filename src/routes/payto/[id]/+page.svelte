@@ -19,7 +19,7 @@
 					style: 'border-radius: 200px; background: #333; color: #fff;'
 				});
 				await update();
-			} else if (result.type === 'error') {
+			} else if (result.type === 'failure') {
 				toast.error('Not enough money BROKE BOI 😖!', {
 					style: 'border-radius: 200px; background: #333; color: #fff;'
 				});

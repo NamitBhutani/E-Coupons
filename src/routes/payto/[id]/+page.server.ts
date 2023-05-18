@@ -31,11 +31,12 @@ export const actions: Actions = {
 			return fail(500, {
 				message: 'Something went HORRIBLY wrong on our side 😓'
 			});
-		else if (loadDataforUser?.balance > loadData.balance) {
+		else if (parseFloat(loadDataforUser?.balance) >= parseFloat(amount)) {
 			newAmount = parseFloat(amount) + parseFloat(loadData.balance);
 			newAmountforUser = parseFloat(loadDataforUser?.balance) - parseFloat(amount);
-		} else
+		} else {
 			return fail(500, { message: 'You do not have enough balance to make this transaction 🙅‍♀️' });
+		}
 
 		const { error: err } = await supabase
 			.from('profiles')

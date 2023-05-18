@@ -18,8 +18,9 @@
 			.select('balance')
 			.eq('email', user?.email)
 			.single();
-		if (err) console.log(JSON.stringify(err) + 'this error is from 2');
-		else balance = loadData.balance;
+		if (err) {
+			console.log(user?.email);
+		} else balance = loadData.balance;
 	});
 	//export let form: ActionData;
 

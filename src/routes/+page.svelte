@@ -10,25 +10,27 @@
 	let balance: any;
 
 	onMount(async () => {
-		const {
-			data: { user }
-		} = await supabase.auth.getUser();
+		if (data?.session?.user.user_metadata.isVendor == undefined || null) {
+			const {
+				data: { user }
+			} = await supabase.auth.getUser();
 
-		const { data: loadData, error: err } = await supabase
-			.from('profiles')
-			.select('balance')
-			.eq('email', user?.email)
-			.single();
-		if (err) {
-			return fail(500, { message: 'Something went wrong on our side 😓' });
-		} else balance = loadData.balance;
-	});
+			const { data: loadData, error: err } = await supabase
+				.from('profiles')
+				.select('balance')
+				.eq('email', user?.email)
+				.single();
+			if (err) {
+				//return fail(500, { message: 'Something went wrong on our side 😓' });
+			} else balance = loadData.balance;
+		}
+	}); // for user balance fetching
 	//export let form: ActionData;
 
 	const formValidation: SubmitFunction = ({ data, cancel }) => {
 		const { amount } = Object.fromEntries(data);
-		if (amount.length < 1) {
-			toast.error(' Amount or Vendor Username cannot be empty!', {
+		if (amount.length < 1 || <number>(<unknown>amount) < 0) {
+			toast.error(' Invalid amount!', {
 				style: 'border-radius: 200px; background: #333; color: #fff;'
 			});
 			cancel();
@@ -49,7 +51,7 @@
 	let qrDataURL: string;
 	let uuid: string;
 	let showParagraph: boolean = false;
-	let userBalanceVar: any;
+	let userBalanceRealtime: any;
 	onMount(async () => {
 		if (data?.session?.user.user_metadata.isVendor == true) {
 			uuid = data.session.user.id;
@@ -62,10 +64,18 @@
 
 	const userBalance = supabase
 		.channel('getUserBalance')
-		.on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'profiles' }, (payload) => {
-			userBalanceVar = payload.new.balance;
-			//console.log('Changes Received', userBalanceVar);
-		})
+		.on(
+			'postgres_changes',
+			{
+				event: 'UPDATE',
+				schema: 'public',
+				table: 'profiles',
+				filter: `id=eq.${data.session?.user.id}`
+			},
+			(payload) => {
+				userBalanceRealtime = payload.new.balance;
+			}
+		)
 		.subscribe();
 </script>
 
@@ -78,8 +88,7 @@
 			</p>
 			{#if showParagraph}
 				<p class="text-2xl text-center mx-1">
-					<span class="font-bold">Current Balance:</span> ₹{userBalanceVar ||
-						balance ||
+					<span class="font-bold">Current Balance:</span> ₹{userBalanceRealtime ??
 						data.userBalance?.balance}
 				</p>
 			{/if}
@@ -98,7 +107,7 @@
 			</p>
 			{#if showParagraph}
 				<p class="text-2xl text-center mx-1">
-					<span class="font-bold">Current Balance:</span> ₹ {userBalanceVar || balance}
+					<span class="font-bold">Current Balance:</span> ₹ {userBalanceRealtime ?? balance}
 				</p>
 			{/if}
 			<button class="btn btn-md mx-2" on:click={toggleBalanceView}

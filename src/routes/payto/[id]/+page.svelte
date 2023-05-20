@@ -6,8 +6,8 @@
 
 	const formValidation: SubmitFunction = ({ data, cancel }) => {
 		const { amount } = Object.fromEntries(data);
-		if (amount.length < 1) {
-			toast.error('Amount cannot be empty!', {
+		if (amount.length < 1 || <number>(<unknown>amount) < 0) {
+			toast.error('Invalid Amount!', {
 				style: 'border-radius: 200px; background: #333; color: #fff;'
 			});
 			cancel();

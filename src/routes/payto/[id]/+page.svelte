@@ -1,8 +1,27 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import toast from 'svelte-french-toast';
+	import { supabase } from '$lib/supabaseClient';
 	export let data: PageData;
+	export let formData: number;
 	import type { PageData, SubmitFunction } from './$types';
+	let userBalanceRealtime: any;
+
+	const userBalance = supabase
+		.channel('getUserBalance')
+		.on(
+			'postgres_changes',
+			{
+				event: 'UPDATE',
+				schema: 'public',
+				table: 'profiles',
+				filter: `id=eq.${data.session?.user.id}`
+			},
+			(payload) => {
+				userBalanceRealtime = payload.new.balance;
+			}
+		)
+		.subscribe();
 
 	const formValidation: SubmitFunction = ({ data, cancel }) => {
 		const { amount } = Object.fromEntries(data);
@@ -28,14 +47,19 @@
 	};
 </script>
 
-{#if data.session && data.vendorData[0].raw_user_meta_data.isVendor === true}
+{#if data.session && data.Data.vendorUsername[0].raw_user_meta_data.isVendor === true && data.session.user.user_metadata.isVendor !== true}
 	<div class="flex justify-center items-center">
 		<form action="?/payto" method="POST" class="w-full max-w-xs" use:enhance={formValidation}>
 			<div>
 				<div class="text-center">
 					<label class="payto text-2xl" for="payto">
 						Paying To: <span class="font-bold"
-							>{data.vendorData[0].raw_user_meta_data.username}</span
+							>{data.Data.vendorUsername[0].raw_user_meta_data.username}</span
+						>
+					</label>
+					<label class="payto text-2xl" for="payto">
+						Your Current Balance: <span class="font-bold"
+							>₹{userBalanceRealtime ?? data.Data.userBalanceData?.balance}</span
 						>
 					</label>
 				</div>
@@ -47,12 +71,24 @@
 						id="amount"
 						placeholder="Amount"
 						class="input input-bordered input-lg w-full max-w-xs"
+						bind:value={formData}
 					/>
 				</label>
 			</div>
 			<button type="submit" class="btn btn-md w-full mt-4 text-xl">Pay</button>
 		</form>
 	</div>
+
+	<!-- Showing curent payment confirmation status -->
+
+	{#if data.Data.userBalanceData.paidorreceive}
+		{#each data.Data.userBalanceData.paidorreceive as item}
+			<div>
+				Paid ₹ {item.amount} to {item.to} <br />
+				<button class="btn btn-md w-full mt-4 text-xl">More Info</button>
+			</div>
+		{/each}
+	{/if}
 {:else if !data.session}
 	<div class="flex justify-center items-center custom-height">
 		<div class="grid grid-rows-2 grid-cols-1 gap-4 text-center px-4">
@@ -60,11 +96,16 @@
 			<a href="/login" role="button" class="btn btn-md text-xl">Login</a>
 		</div>
 	</div>
-{:else}
+{:else if data.Data.vendorUsername[0].raw_user_meta_data.isVendor !== true}
 	<div class="flex justify-center items-center custom-height">
 		<div class="grid grid-rows-2 grid-cols-1 gap-4 text-center px-4">
 			<h1 class="alert alert-error font-bold text-xl">❌ Invalid Vendor ID <br /> 😖</h1>
-			<a href="/" role="button" class="btn btn-md text-l">Pay Using Vendor Name</a>
+		</div>
+	</div>
+{:else}
+	<div class="flex justify-center items-center custom-height">
+		<div class="grid grid-rows-2 grid-cols-1 gap-4 text-center px-4">
+			<h1 class="alert alert-error font-bold text-xl">❌ You can't pay another vendor!<br /> 😖</h1>
 		</div>
 	</div>
 {/if}

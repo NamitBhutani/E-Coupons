@@ -77,6 +77,10 @@
 			}
 		)
 		.subscribe();
+	let showLogs: boolean = false;
+	const handleShow = () => {
+		showLogs = !showLogs;
+	};
 </script>
 
 <div class="flex items-center justify-center">
@@ -101,6 +105,19 @@
 			<form method="POST" action="/logout" class="flex items-center justify-center">
 				<button class="btn btn-md px-14" type="submit"> Logout </button>
 			</form>
+			<button class="btn btn-md w-full mt-4 text-xl mb-4" on:click={handleShow}
+				>Confirmation/Transactions</button
+			>
+			{#if data.userBalance?.paidorreceive && showLogs}
+				{#each data.userBalance.paidorreceive as item}
+					<div class="text-center">
+						<div class="badge badge-lg p-6">
+							Received ₹ {item.amount} from {item.from} <br />
+							Confirmation Hash : {item.hash}
+						</div>
+					</div>
+				{/each}
+			{/if}
 		{:else if data.session !== null && data.session.user.user_metadata.name !== null}
 			<p class="text-2xl text-center mx-1">
 				Welcome to the User Screen, {data.session.user.user_metadata.name}!

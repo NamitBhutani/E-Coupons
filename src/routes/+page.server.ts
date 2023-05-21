@@ -44,7 +44,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 
 	const { data: loadData, error: err } = await supabase
 		.from('profiles')
-		.select('balance')
+		.select('balance, paidorreceive')
 		.eq('email', session?.user.email)
 		.single(); // Returns the data in a single object instead of an array(really cool find from the docs :D)
 	return {

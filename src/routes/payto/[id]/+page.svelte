@@ -6,6 +6,10 @@
 	export let formData: number;
 	import type { PageData, SubmitFunction } from './$types';
 	let userBalanceRealtime: any;
+	let showLogs: boolean = false;
+	const handleShow = () => {
+		showLogs = !showLogs;
+	};
 
 	const userBalance = supabase
 		.channel('getUserBalance')
@@ -56,9 +60,9 @@
 						Paying To: <span class="font-bold"
 							>{data.Data.vendorUsername[0].raw_user_meta_data.username}</span
 						>
-					</label>
+					</label><br />
 					<label class="payto text-2xl" for="payto">
-						Your Current Balance: <span class="font-bold"
+						Your Balance: <span class="font-bold"
 							>₹{userBalanceRealtime ?? data.Data.userBalanceData?.balance}</span
 						>
 					</label>
@@ -76,16 +80,28 @@
 				</label>
 			</div>
 			<button type="submit" class="btn btn-md w-full mt-4 text-xl">Pay</button>
+			<a href="/" class="btn btn-md w-full mt-4 text-xl">Home</a>
 		</form>
 	</div>
 
 	<!-- Showing curent payment confirmation status -->
+	<div>
+		<form method="POST" action="/logout">
+			<button class="btn btn-md w-full mt-4 text-xl" type="submit"> Logout </button>
+		</form>
+		<button class="btn btn-md w-full mt-4 text-xl mb-4" on:click={handleShow}
+			>Confirmation/Transactions</button
+		>
+	</div>
 
-	{#if data.Data.userBalanceData.paidorreceive}
+	<hr />
+	{#if data.Data.userBalanceData.paidorreceive && showLogs}
 		{#each data.Data.userBalanceData.paidorreceive as item}
-			<div>
-				Paid ₹ {item.amount} to {item.to} <br />
-				<button class="btn btn-md w-full mt-4 text-xl">More Info</button>
+			<div class="text-center mt-4 mb-4">
+				<div class="badge badge-lg p-6">
+					Paid ₹ {item.amount} to {item.to} <br />
+					Confirmation Hash : {item.hash}
+				</div>
 			</div>
 		{/each}
 	{/if}

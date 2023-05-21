@@ -1,9 +1,8 @@
 import type { PageServerLoad, Actions } from './$types';
 import { supabase } from '$lib/supabaseClient';
 import { fail } from '@sveltejs/kit';
-import { dataset_dev } from 'svelte/internal';
+import { v5 as uuidv5 } from 'uuid';
 
-let loadeddatainFormAction: string; // defined a variable so that I can load the vendorBalance only when action is triggered and not on page load
 let newAmount: number;
 let newAmountforUser: number;
 export const actions: Actions = {
@@ -13,7 +12,7 @@ export const actions: Actions = {
 
 		const { data: loadData, error: loadErrforVendor } = await supabase
 			.from('profiles')
-			.select('balance, raw_user_meta_data')
+			.select('balance, raw_user_meta_data, paidorreceive')
 			.eq('id', params.id)
 			.single();
 		// Returns the data in a single object instead of an array(really cool find from the docs :D)
@@ -23,7 +22,10 @@ export const actions: Actions = {
 			.select('balance, paidorreceive')
 			.eq('id', session?.user.id)
 			.single();
-
+		let confirmation_hash = uuidv5(
+			JSON.stringify([amount, session?.user.id, params.id]),
+			uuidv5.URL
+		); //generating a unique hash for the transaction
 		if (loadErrforVendor || loadErrforUser)
 			return fail(500, {
 				message: 'Something went HORRIBLY wrong on our side 😓'
@@ -47,11 +49,21 @@ export const actions: Actions = {
 			.from('profiles')
 			.update({
 				paidorreceive: [
-					{ amount: amount, to: loadData.raw_user_meta_data.username },
+					{ amount: amount, to: loadData.raw_user_meta_data.username, hash: confirmation_hash },
 					...loadDataforUser.paidorreceive
 				]
 			})
 			.eq('id', session?.user.id);
+
+		const { error: errforupdatingPaidRecdColforVendor } = await supabase
+			.from('profiles')
+			.update({
+				paidorreceive: [
+					{ amount: amount, from: session?.user.user_metadata.name, hash: confirmation_hash },
+					...loadData.paidorreceive
+				]
+			})
+			.eq('id', params.id);
 
 		if (err || errforUser)
 			return fail(500, {

@@ -2,10 +2,12 @@
 	import { enhance } from '$app/forms';
 	import { supabase } from '$lib/supabaseClient';
 	import toast from 'svelte-french-toast';
-	import type { ActionData, PageData, SubmitFunction } from './$types';
+	import type { PageData, SubmitFunction } from './$types';
 	import QRCode from 'qrcode';
 	import { onMount } from 'svelte';
-	import { fail } from '@sveltejs/kit';
+	import { Html5Qrcode } from 'html5-qrcode';
+	import { redirect } from '@sveltejs/kit';
+
 	export let data: PageData;
 	let balance: any;
 
@@ -55,7 +57,7 @@
 	onMount(async () => {
 		if (data?.session?.user.user_metadata.isVendor == true) {
 			uuid = data.session.user.id;
-			qrDataURL = await QRCode.toDataURL(`ecoupons.vercel.app/payto/${uuid}`);
+			qrDataURL = await QRCode.toDataURL(`/payto/${uuid}`);
 		}
 	});
 	const toggleBalanceView = () => {
@@ -81,6 +83,49 @@
 	const handleShow = () => {
 		showLogs = !showLogs;
 	};
+
+	//SCANNER LOGIC
+	let scanning: boolean = false;
+	let scanneraddress: string = '';
+	let html5Qrcode: any;
+	let scansuccess: boolean = false;
+
+	onMount(init);
+
+	function init() {
+		html5Qrcode = new Html5Qrcode('reader');
+	}
+
+	function start() {
+		html5Qrcode.start(
+			{ facingMode: 'environment' },
+			{
+				fps: 20,
+				qrbox: { width: 200, height: 200 }
+			},
+			onScanSuccess,
+			onScanFailure
+		);
+		scanning = true;
+	}
+
+	function stop() {
+		html5Qrcode.stop();
+		return 'Click on the button to go the payments!';
+		//scanning = false;
+	}
+
+	function onScanSuccess(decodedText: string, decodedResult: any) {
+		scanneraddress = decodedText;
+		scansuccess = true;
+
+		//alert(`Code matched = ${decodedText}, `);
+		//.log(decodedResult);
+	}
+
+	function onScanFailure(error: any) {
+		//console.warn(`Code scan error = ${error}`);
+	}
 </script>
 
 <div class="flex items-center justify-center">
@@ -157,6 +202,15 @@
 					</form>
 				</div>
 			</div>
+			<reader id="reader" />
+
+			{#if scanning && scansuccess}
+				<a href={scanneraddress} class="btn btn-md w-full">Go to Payments Page</a>
+				<div class="text-center">{stop()}</div>
+				<!-- <button on:click={stop} class="btn btn-md w-full">Stop Scanning</button> -->
+			{:else}
+				<button on:click={start} class="btn btn-md w-full">Scan To Pay</button>
+			{/if}
 		{:else}
 			<div class="flex justify-center gap-7 mt-2">
 				<a href="/login" role="button" class="btn btn-md item text-2xl">Login</a>

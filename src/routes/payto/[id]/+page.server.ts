@@ -2,6 +2,7 @@ import type { PageServerLoad, Actions } from './$types';
 import { supabase } from '$lib/supabaseClient';
 import { fail } from '@sveltejs/kit';
 import { v5 as uuidv5 } from 'uuid';
+let time = new Date();
 
 let newAmount: number;
 let newAmountforUser: number;
@@ -23,7 +24,7 @@ export const actions: Actions = {
 			.eq('id', session?.user.id)
 			.single();
 		let confirmation_hash = uuidv5(
-			JSON.stringify([amount, session?.user.id, params.id]),
+			JSON.stringify([amount, session?.user.id, params.id, time]),
 			uuidv5.URL
 		); //generating a unique hash for the transaction
 		if (loadErrforVendor || loadErrforUser)

@@ -37,7 +37,24 @@ export const actions: Actions = {
 				message: 'Oops! The transaction failed. Please try again later.'
 			});
 		}
-	} //updating the balance of the vendor
+	},//updating the balance of the vendor
+
+
+	item: async ({ request, locals }) => {
+		const formdata = await request.formData();
+		const price = formdata.get('price')
+		const itemname = formdata.get('itemname')
+		const session = await locals.getSession();
+		const { data: loadData, error: loadErr } = await supabase
+			.from('profiles')
+			.select('vendorItem')
+			.eq('id', session?.user.id)
+			.single()
+		const { error: err } = await supabase
+			.from('profiles')
+			.update({ vendorItem: [{ amount: price, name: itemname }, ...loadData?.vendorItem] })
+			.eq('id', session?.user.id)
+	}
 };
 export const load: PageServerLoad = async ({ locals }) => {
 	const session = await locals.getSession();

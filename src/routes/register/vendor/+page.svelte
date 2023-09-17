@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
+	export let Pagedata: PageData;
 	//export let form: ActionData;
-	import type { ActionData, SubmitFunction } from './$types';
+	import type { PageData, SubmitFunction } from './$types';
 	import toast from 'svelte-french-toast';
 
 	const formValidation: SubmitFunction = ({ data, cancel }) => {
@@ -13,6 +14,11 @@
 			cancel();
 		} else if (password.length < 8) {
 			toast.error('Password must be at least 8 characters long!', {
+				style: 'border-radius: 200px; background: #333; color: #fff;'
+			});
+			cancel();
+		} else if (email === Pagedata.Data.vendorEmail[0].email) {
+			toast.error('User already exists', {
 				style: 'border-radius: 200px; background: #333; color: #fff;'
 			});
 			cancel();

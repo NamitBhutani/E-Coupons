@@ -153,6 +153,21 @@
 			<button class="btn btn-md w-full mt-4 text-xl mb-4" on:click={handleShow}
 				>Confirmation/Transactions</button
 			>
+			<form method="POST" action="?/item" class="flex items-center justify-center">
+				<input
+					type="text"
+					name="itemname"
+					placeholder="Item Name"
+					class="input input-bordered input-lg w-full max-w-xs col-span-1"
+				/>
+				<input
+					type="text"
+					name="price"
+					placeholder="Price"
+					class="input input-bordered input-lg w-full max-w-xs col-span-1"
+				/>
+				<button class="btn btn-md px-14" type="submit"> Add item </button>
+			</form>
 			{#if data.userBalance?.paidorreceive && showLogs}
 				{#each data.userBalance.paidorreceive as item}
 					<div class="text-center">

@@ -4,6 +4,7 @@
 	import { supabase } from '$lib/supabaseClient';
 	export let data: PageData;
 	export let formData: number;
+	//export let formData2: number;
 	import type { PageData, SubmitFunction } from './$types';
 	let userBalanceRealtime: any;
 	let showLogs: boolean = false;
@@ -82,6 +83,18 @@
 			<button type="submit" class="btn btn-md w-full mt-4 text-xl">Pay</button>
 			<a href="/" class="btn btn-md w-full mt-4 text-xl">Home</a>
 		</form>
+		{#if data.Data?.vendorItems}
+			{#each data.Data.vendorItems[0].vendorItem as item}
+				<div>
+					<form action="?/payto" method="POST" class="w-full max-w-xs">
+						<div>{item.name}</div>
+						<div>{item.amount}</div>
+						<input type="text" name="amount" id="amount" value={item.amount} />
+						<button type="submit" class="btn btn-md w-full mt-4 text-xl">Pay</button>
+					</form>
+				</div>
+			{/each}
+		{/if}
 	</div>
 
 	<!-- Showing curent payment confirmation status -->
